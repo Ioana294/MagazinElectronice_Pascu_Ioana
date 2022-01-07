@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MagazinElectronice_Pascu_Ioana.Models.MagazinViewModels.GrupComanda>
+@{
+    ViewData["Title"] = "Statistici device-uri comandate";
+}
+<h2>Statistici device-uri comandate</h2>
+<table>
+    <tr>
+        <th>
+            Dată comandă
+        </th>
+        <th>
+            Device-uri comandate
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataComanda)
+            </td>
+            <td>
+                @item.DeviceCount
+            </td>
+        </tr>
+    }
+</table>

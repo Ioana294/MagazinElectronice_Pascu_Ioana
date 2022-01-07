@@ -1,0 +1,44 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.Device
+
+@{
+    ViewData["Title"] = "Editare";
+}
+
+<h1>Editare</h1>
+
+<h4>Device</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Denumire" class="control-label"></label>
+                <input asp-for="Denumire" class="form-control" />
+                <span asp-validation-for="Denumire" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descriere" class="control-label"></label>
+                <input asp-for="Descriere" class="form-control" />
+                <span asp-validation-for="Descriere" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pret" class="control-label"></label>
+                <input asp-for="Pret" class="form-control" />
+                <span asp-validation-for="Pret" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvează" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Înapoi la lista completă</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,30 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.Marca
+
+@{
+    ViewData["Title"] = "Detalii";
+}
+
+<h1>Detalii</h1>
+
+<div>
+    <h4>Marcă</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DenumireMarca)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DenumireMarca)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fondator)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fondator)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Editare</a> |
+    <a asp-action="Index">Înapoi la listă</a>
+</div>

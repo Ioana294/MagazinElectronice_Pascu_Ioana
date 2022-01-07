@@ -1,0 +1,58 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.Device
+
+@{
+    ViewData["Title"] = "Detalii";
+}
+
+<h1>Detalii</h1>
+
+<div>
+    <h4>Device</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Denumire)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Denumire)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Descriere)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Descriere)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Pret)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Pret)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Comenzi)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Client</th>
+                    <th>Dată comandă</th>
+                </tr>
+                @foreach (var item in Model.Comenzi)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Client.Prenume)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataComanda)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Editare</a> |
+    <a asp-action="Index">Înapoi la lista completă</a>
+</div>

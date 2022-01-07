@@ -1,0 +1,68 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.Marca
+
+@{
+    ViewData["Title"] = "Editare";
+}
+
+<h1>Editează</h1>
+
+<h4>Marcă</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="DenumireMarca" class="control-label"></label>
+                <input asp-for="DenumireMarca" class="form-control" />
+                <span asp-validation-for="DenumireMarca" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fondator" class="control-label"></label>
+                <input asp-for="Fondator" class="form-control" />
+                <span asp-validation-for="Fondator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+
+                                List<MagazinElectronice_Pascu_Ioana.Models.MagazinViewModels.MarcaDeviceData> devices =
+                                ViewBag.Devices;
+                                foreach (var device in devices)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                    @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <input type="checkbox"
+                                               name="selectedBooks"
+                                               value="@device.DeviceID"
+                                               @(Html.Raw(device.IsMarca ? "checked=\"checked\"" : "")) />
+                                        @device.DeviceID @: @device.Denumire
+                                    @:</td>
+                                }
+                            @:</tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Salvează" class="btn btn-primary" />
+                </div>
+            </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Înapoi la listă</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

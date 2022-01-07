@@ -1,0 +1,112 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.MagazinViewModels.MarcaIndexData
+@{
+    ViewData["Title"] = "Mărci";
+}
+<h2>Mărci</h2>
+<p>
+    <a asp-action="Create">Creează</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Denumire marcă</th>
+            <th>Fondator</th>
+            <th>Devices</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Marci)
+        {
+            string selectedRow = "";
+            if (item.ID == (int?)ViewData["MarcaID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.DenumireMarca)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fondator)
+                </td>
+
+                <td>
+                    @{
+                        foreach (var device in item.MarcaDevices)
+                        {
+                            @device.Device.ID @: @device.Device.Denumire <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.ID">Selectare</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ID">Editare</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Detalii</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Ștergere</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model.Devices != null)
+{
+    <h3>Device-uri care aparțin de marca selectată</h3>
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>Denumire</th>
+            <th>Descriere</th>
+            <th>Preț</th>
+        </tr>
+        @foreach (var item in Model.Devices)
+        {
+            string selectedRow = "";
+            if (item.ID == (int?)ViewData["DeviceID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink("Select", "Index", new { deviceID = item.ID })
+                </td>
+                <td>
+                    @item.Denumire
+                </td>
+                <td>
+                    @item.Descriere
+                </td>
+                <td>
+                    @item.Pret
+                </td>
+            </tr>
+        }
+        </table>
+}
+        @if (Model.Comenzi != null)
+        {
+            <h3>
+                Clienți care au comandat device-urile selectate
+            </h3>
+            <table class="table">
+                <tr>
+                    <th>Nume</th>
+                    <th>Prenume</th>
+                    <th>Dată comandă</th>
+                </tr>
+                @foreach (var item in Model.Comenzi)
+                {
+                    <tr>
+                        <td>
+                            @item.Client.Nume
+                        </td>
+                        <td>
+                            @item.Client.Prenume
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataComanda)
+                        </td>
+                    </tr>
+                }
+            </table>
+        }

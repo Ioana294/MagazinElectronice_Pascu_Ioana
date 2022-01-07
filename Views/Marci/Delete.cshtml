@@ -1,0 +1,33 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.Marca
+
+@{
+    ViewData["Title"] = "Ștergere";
+}
+
+<h1>Ștergere</h1>
+
+<h3>Sunteți sigur că doriți să ștergeți?</h3>
+<div>
+    <h4>Marcă</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DenumireMarca)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DenumireMarca)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fondator)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fondator)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Șterge" class="btn btn-danger" /> |
+        <a asp-action="Index">Înapoi la listă</a>
+    </form>
+</div>
