@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using MagazinElectronice_Pascu_Ioana.Data;
+using MagazinElectronice_Pascu_Ioana.Hubs;
+using Microsoft.AspNetCore.Identity;
 
 namespace MagazinElectronice_Pascu_Ioana
 {
@@ -27,6 +29,14 @@ namespace MagazinElectronice_Pascu_Ioana
         {
             services.AddControllersWithViews();
             services.AddDbContext<MagazinElectronice>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddSignalR();
+
+            services.Configure<IdentityOptions>(options => {
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +57,7 @@ namespace MagazinElectronice_Pascu_Ioana
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -54,6 +65,8 @@ namespace MagazinElectronice_Pascu_Ioana
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapHub<ChatHub>("/chathub");
+                    endpoints.MapRazorPages();
             });
         }
     }

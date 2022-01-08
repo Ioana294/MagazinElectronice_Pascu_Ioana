@@ -55,5 +55,9 @@ namespace MagazinElectronice_Pascu_Ioana.Controllers
             };
             return View(await data.AsNoTracking().ToListAsync());
         }
+        public IActionResult Chat()
+        {
+            return View();
+        }
     }
 }
