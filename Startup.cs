@@ -30,12 +30,33 @@ namespace MagazinElectronice_Pascu_Ioana
             services.AddControllersWithViews();
             services.AddDbContext<MagazinElectronice>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSignalR();
+            services.AddRazorPages();
 
             services.Configure<IdentityOptions>(options => {
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
+                options.Password.RequiredLength = 8;
+            });
+
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("OnlyAngajat", policy => {
+                    policy.RequireRole("Angajat");
+                    policy.RequireClaim("Rol", "Angajat");
+                });
+            });
+
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("RolManager", policy => {
+                    policy.RequireRole("Manager");
+                    policy.RequireClaim("Rol", "Manager");
+                });
+            });
+            services.ConfigureApplicationCookie(opts =>
+            {
+                opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
+
             });
         }
 

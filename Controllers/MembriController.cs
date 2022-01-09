@@ -11,26 +11,25 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace MagazinElectronice_Pascu_Ioana.Controllers
 {
-    [Authorize(Roles = "Angajat")]
-    public class DevicesController : Controller
+    [Authorize(Policy = "RolManager")]
+    public class MembriController : Controller
     {
         private readonly MagazinElectronice _context;
 
-        public DevicesController(MagazinElectronice context)
+        public MembriController(MagazinElectronice context)
         {
             _context = context;
         }
 
-        // GET: 
-        [AllowAnonymous]
+        // GET: Membri
         public async Task<IActionResult> Index(string ordineSortare, string currentFilter, string stringCautare, int? numarPagina)
         {
             ViewData["CurrentSort"] = ordineSortare;
-            ViewData["DenumireSortParm"] = String.IsNullOrEmpty(ordineSortare) ? "denumire_desc" : "";
-            ViewData["PretSortParm"] = ordineSortare == "Pret" ? "pret_desc" : "Pret";
+            ViewData["PrenumeSortParm"] = String.IsNullOrEmpty(ordineSortare) ? "prenume_desc" : "";
+            ViewData["PuncteSortParm"] = ordineSortare == "Puncte" ? "puncte_desc" : "Puncte";
             ViewData["CurrentFilter"] = stringCautare;
 
-            if(stringCautare != null)
+            if (stringCautare != null)
             {
                 numarPagina = 1;
             }
@@ -40,33 +39,32 @@ namespace MagazinElectronice_Pascu_Ioana.Controllers
             }
 
 
-            var devices = from d in _context.Devices
-                          select d;
+            var membri = from m in _context.Membri
+                          select m;
             if (!String.IsNullOrEmpty(stringCautare))
             {
-                devices = devices.Where(s => s.Denumire.Contains(stringCautare));
+                membri = membri.Where(s => s.Nume.Contains(stringCautare));
             }
             switch (ordineSortare)
             {
-                case "denumire_desc":
-                    devices = devices.OrderByDescending(d => d.Denumire);
+                case "prenume_desc":
+                    membri = membri.OrderByDescending(m => m.Prenume);
                     break;
-                case "Pret":
-                    devices = devices.OrderBy(d => d.Pret);
+                case "Puncte":
+                    membri = membri.OrderBy(m => m.Puncte);
                     break;
-                case "pret_desc":
-                    devices = devices.OrderByDescending(d => d.Pret);
+                case "puncte_desc":
+                    membri = membri.OrderByDescending(m => m.Puncte);
                     break;
                 default:
-                    devices = devices.OrderBy(d => d.Denumire);
+                    membri = membri.OrderBy(m => m.Nume);
                     break;
             }
             int pageSize = 2;
-            return View(await PaginatedList<Device>.CreateAsync(devices.AsNoTracking(), numarPagina ??1, pageSize));
+            return View(await PaginatedList<Membru>.CreateAsync(membri.AsNoTracking(), numarPagina ?? 1, pageSize));
         }
 
-        // GET: Devices/Details/5
-        [AllowAnonymous]
+        // GET: Membri/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -74,50 +72,49 @@ namespace MagazinElectronice_Pascu_Ioana.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Devices
+            var membru = await _context.Membri
                 .Include(s => s.Comenzi)
-                .ThenInclude(e => e.Client)
+                .ThenInclude(E => E.Oferta)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (device == null)
+            if (membru == null)
             {
                 return NotFound();
             }
 
-            return View(device);
+            return View(membru);
         }
 
-        // GET: Devices/Create
+        // GET: Membri/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Devices/Create
+        // POST: Membri/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Denumire,Descriere,Pret")] Device device)
+        public async Task<IActionResult> Create([Bind("Nume,Prenume,Adresa,Puncte")] Membru membru)
         {
             try
             {
-
                 if (ModelState.IsValid)
                 {
-                    _context.Add(device);
+                    _context.Add(membru);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
             }
-            catch (DbUpdateException)
+           catch(DbUpdateException)
             {
                 ModelState.AddModelError("", "Nu se pot salva modificarile. " + "Incercati din nou si daca problema persista ");
             }
-            return View(device);
+            return View(membru);
         }
 
-        // GET: Devices/Edit/5
+        // GET: Membri/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -125,15 +122,15 @@ namespace MagazinElectronice_Pascu_Ioana.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Devices.FindAsync(id);
-            if (device == null)
+            var membru = await _context.Membri.FindAsync(id);
+            if (membru == null)
             {
                 return NotFound();
             }
-            return View(device);
+            return View(membru);
         }
 
-        // POST: Devices/Edit/5
+        // POST: Membri/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
@@ -145,12 +142,12 @@ namespace MagazinElectronice_Pascu_Ioana.Controllers
                 return NotFound();
             }
 
-            var deviceToUpdate = await _context.Devices.FirstOrDefaultAsync(d => d.ID == id);
+            var membruToUpdate = await _context.Membri.FirstOrDefaultAsync(m => m.ID == id);
 
-            if (await TryUpdateModelAsync<Device>(
-                deviceToUpdate,
+            if (await TryUpdateModelAsync<Membru>(
+                membruToUpdate,
                 "",
-                d => d.Denumire, d => d.Descriere, d => d.Pret))
+                m => m.Nume, m => m.Prenume, m => m.Adresa, m => m.Puncte))
             {
                 try
                 {
@@ -162,10 +159,10 @@ namespace MagazinElectronice_Pascu_Ioana.Controllers
                     ModelState.AddModelError("", "Nu se pot salva modificarile." + "Incercati din nou si daca problema persista");
                 }
             }
-            return View(deviceToUpdate);
+            return View(membruToUpdate);
         }
 
-        // GET: Devices/Delete/5
+        // GET: Membri/Delete/5
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
@@ -173,49 +170,48 @@ namespace MagazinElectronice_Pascu_Ioana.Controllers
                 return NotFound();
             }
 
-            var device = await _context.Devices
+            var membru = await _context.Membri
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (device == null)
+            if (membru == null)
             {
                 return NotFound();
             }
 
             if (saveChangesError.GetValueOrDefault())
             {
-                ViewData["ErrorMessage"] ="Stergere eronata. Incercati din nou";
+                ViewData["ErrorMessage"] = "Stergere eronata. Incercati din nou";
             }
 
-            return View(device);
+            return View(membru);
         }
 
-        // POST: Devices/Delete/5
+        // POST: Membri/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var device = await _context.Devices.FindAsync(id);
-            if(device == null)
+            var membru = await _context.Membri.FindAsync(id);
+            if(membru == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
             try
             {
-                _context.Devices.Remove(device);
+                _context.Membri.Remove(membru);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException)
+           catch(DbUpdateException)
             {
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
-           
         }
 
-        private bool DeviceExists(int id)
+        private bool MembruExists(int id)
         {
-            return _context.Devices.Any(e => e.ID == id);
+            return _context.Membri.Any(e => e.ID == id);
         }
     }
 }

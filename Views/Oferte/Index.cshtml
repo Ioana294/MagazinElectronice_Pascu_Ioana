@@ -1,20 +1,20 @@
-﻿@model PaginatedList<MagazinElectronice_Pascu_Ioana.Models.Device>
+﻿@model PaginatedList<MagazinElectronice_Pascu_Ioana.Models.Oferta>
 
 @{
-    ViewData["Title"] = "Device";
+    ViewData["Title"] = "Oferte";
 }
 
-<h1>Magazin</h1>
+<h1>Ofertă</h1>
 
 <p>
-    <a asp-action="Create">Creează nou</a>
+    <a asp-action="Create">Creaază nou</a>
 </p>
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Găsește după denumire: <input type="text" name="stringCautare" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Caută" class="btn btn-default" /> |
-            <a asp-action="Index">Înapoi la lista completă</a>
+            Caută după denumire: <input type="text" name="stringCautare" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Căutare" class="btn btn-default" /> |
+            <a asp-action="Index">Înapoi la listă</a>
         </p>
     </div>
 </form>
@@ -25,10 +25,13 @@
                 <a asp-action="Index" asp-route-ordineSortare="@ViewData["DenumireSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Denumire</a>
             </th>
             <th>
-                Descriere
+                Preț vechi
             </th>
             <th>
-                <a asp-action="Index" asp-route-ordineSortare="@ViewData["PretSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Preț</a>
+                <a asp-action="Index" asp-route-ordineSortare="@ViewData["PretRedusSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Preț redus</a>
+            </th>
+            <th>
+                Valabilitate
             </th>
             <th></th>
         </tr>
@@ -41,10 +44,13 @@
                     @Html.DisplayFor(modelItem => item.Denumire)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Descriere)
+                    @Html.DisplayFor(modelItem => item.PretVechi)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Pret)
+                    @Html.DisplayFor(modelItem => item.PretRedus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valabilitate)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.ID">Editare</a> |

@@ -19,8 +19,11 @@ namespace MagazinElectronice_Pascu_Ioana.Areas.Identity
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("IdentityContextConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<IdentityContext>();
+                services.AddDefaultIdentity<IdentityUser>(options =>
+                    options.SignIn.RequireConfirmedAccount = true)
+                        .AddRoles<IdentityRole>()
+                        .AddEntityFrameworkStores<IdentityContext>();
+
             });
         }
     }

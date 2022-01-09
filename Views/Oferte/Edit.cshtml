@@ -1,0 +1,49 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.Oferta
+
+@{
+    ViewData["Title"] = "Editare";
+}
+
+<h1>Editare</h1>
+
+<h4>Ofertă</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="Denumire" class="control-label"></label>
+                <input asp-for="Denumire" class="form-control" />
+                <span asp-validation-for="Denumire" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PretVechi" class="control-label"></label>
+                <input asp-for="PretVechi" class="form-control" />
+                <span asp-validation-for="PretVechi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PretRedus" class="control-label"></label>
+                <input asp-for="PretRedus" class="form-control" />
+                <span asp-validation-for="PretRedus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Valabilitate" class="control-label"></label>
+                <input asp-for="Valabilitate" class="form-control" />
+                <span asp-validation-for="Valabilitate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvează" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Înapoi la listă</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

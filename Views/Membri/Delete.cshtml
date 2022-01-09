@@ -1,0 +1,45 @@
+﻿@model MagazinElectronice_Pascu_Ioana.Models.Membru
+
+@{
+    ViewData["Title"] = "Ștergere";
+}
+
+<h1>Ștergere</h1>
+<p class="text-danger">@ViewData["ErrorMessage"]</p>
+<h3>Sunteți sigur că doriți să ștergeți</h3>
+<div>
+    <h4>Membru</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nume)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nume)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Prenume)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Prenume)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Adresa)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Adresa)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Puncte)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Puncte)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Șterge" class="btn btn-danger" /> |
+        <a asp-action="Index">Înapoi la listă</a>
+    </form>
+</div>

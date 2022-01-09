@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using MagazinElectronice_Pascu_Ioana.Data;
 using MagazinElectronice_Pascu_Ioana.Models;
 using MagazinElectronice_Pascu_Ioana.Models.MagazinViewModels;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace MagazinElectronice_Pascu_Ioana.Controllers
 {
+    [Authorize(Policy = "OnlyAngajat")]
     public class MarciController : Controller
     {
         private readonly MagazinElectronice _context;
